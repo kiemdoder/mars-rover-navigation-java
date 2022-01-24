@@ -52,7 +52,6 @@ public class Mars {
                 }
             }
         }
-        ;
 
         return Optional.of(rovers);
     }
