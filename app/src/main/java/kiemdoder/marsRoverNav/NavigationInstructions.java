@@ -1,6 +1,6 @@
 package kiemdoder.marsRoverNav;
 
-import java.util.Set;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class NavigationInstructions {
@@ -17,7 +17,7 @@ public class NavigationInstructions {
         return pattern.matcher(s).matches();
     }
 
-    public boolean driveRover(Rover rover, Area area, Set<Rover> otherRovers) {
+    public boolean driveRover(Rover rover, Area area, List<Rover> otherRovers) {
         for (char c : instructions.toCharArray()) {
             switch (c) {
                 case 'R', 'L':
@@ -25,7 +25,10 @@ public class NavigationInstructions {
                     break;
 
                 case 'M':
-                    rover.move(area);
+                    if (!rover.move(area, otherRovers)) {
+                        return false;
+                    }
+                    break;
             }
         }
 

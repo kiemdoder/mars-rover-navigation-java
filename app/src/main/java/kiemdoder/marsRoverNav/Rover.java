@@ -1,5 +1,6 @@
 package kiemdoder.marsRoverNav;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,29 +36,39 @@ public class Rover {
         return coordinates;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
     public Direction getDirection() {
         return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public void turn(TurnDirection turnDirection) {
         direction = direction.turn(turnDirection);
     }
 
-    public boolean move(Area area) { //TODO: other rovers?
+    public boolean move(Area area, List<Rover> otherRovers) {
+        if (!canMove(area, otherRovers)) {
+            return false;
+        }
+
         final Coordinates nextCoordinates = coordinates.move(direction);
         if (area.coordinatesOutside(nextCoordinates)) {
             return false;
         }
         coordinates = nextCoordinates;
         return true;
+    }
+
+    public boolean canMove(Area area, List<Rover> otherRovers) {
+        final Coordinates nextCoordinates = coordinates.move(direction);
+        if (area.coordinatesOutside(nextCoordinates)) {
+            System.out.println("Reached the end of the plateau");
+            return false;
+        }
+        if (otherRovers.stream().noneMatch(rover -> rover.getCoordinates().equals(nextCoordinates))) {
+            return true;
+        } else {
+            System.out.println("Bumped into another rover");
+            return false;
+        }
     }
 
     @Override
@@ -67,5 +78,4 @@ public class Rover {
                 ", direction=" + direction +
                 '}';
     }
-
 }

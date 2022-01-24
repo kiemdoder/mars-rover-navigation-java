@@ -2,6 +2,8 @@ package kiemdoder.marsRoverNav;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,17 +37,27 @@ class RoverTest {
     }
 
     @Test
+    void canMove() {
+        final Rover rover = new Rover(new Coordinates(0, 0), Direction.North);
+        final Rover blockingRover = new Rover(new Coordinates(0, 1), Direction.North);
+        assertFalse(rover.canMove(new Area(10, 10), List.of(blockingRover, rover)));
+
+        assertFalse(rover.move(new Area(10, 10), List.of(blockingRover)));
+        assertEquals(rover.getCoordinates(), new Coordinates(0, 0));
+    }
+
+    @Test
     void move() {
         final Area area = new Area(2, 2);
         final Rover rover = new Rover(new Coordinates(0, 0), Direction.North);
-        assertTrue(rover.move(area));
+        assertTrue(rover.move(area, Collections.emptyList()));
         assertEquals(rover.getCoordinates(), new Coordinates(0, 1));
 
         rover.turn(TurnDirection.Right);
-        assertTrue(rover.move(area));
+        assertTrue(rover.move(area, Collections.emptyList()));
         assertEquals(rover.getCoordinates(), new Coordinates(1, 1));
 
-        assertFalse(rover.move(area));
+        assertFalse(rover.move(area, Collections.emptyList()));
 
         //TODO: test bumping into other rovers
     }
