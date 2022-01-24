@@ -48,7 +48,7 @@ class RoverTest {
 
     @Test
     void move() {
-        final Area area = new Area(2, 2);
+        final Area area = new Area(1, 1);
         final Rover rover = new Rover(new Coordinates(0, 0), Direction.North);
         assertTrue(rover.move(area, Collections.emptyList()));
         assertEquals(rover.getCoordinates(), new Coordinates(0, 1));

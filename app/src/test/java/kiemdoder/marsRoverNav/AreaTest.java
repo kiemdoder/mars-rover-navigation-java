@@ -17,7 +17,7 @@ class AreaTest {
 
     @Test
     void parse() {
-        final Optional<Area> area_ = Area.parse("32 4");
+        final Optional<Area> area_ = Area.parse("31 3");
         assertTrue(area_.isPresent());
 
         final Area area = area_.get();
@@ -28,7 +28,7 @@ class AreaTest {
 
     @Test
     void coordinatesOutside() {
-        final Area area = new Area(6, 3);
+        final Area area = new Area(5, 2);
         assertTrue(area.coordinatesOutside(new Coordinates(3, 3)));
         assertTrue(area.coordinatesOutside(new Coordinates(6, 1)));
         assertTrue(area.coordinatesOutside(new Coordinates(3, -1)));

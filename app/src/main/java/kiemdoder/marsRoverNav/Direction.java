@@ -1,11 +1,17 @@
 package kiemdoder.marsRoverNav;
 
 public enum Direction {
-    North ,
-    East,
-    South,
-    West,
-    Unknown;
+    North('N') ,
+    East('E'),
+    South( 'S'),
+    West('W'),
+    Unknown('U');
+
+    public final char symbol;
+
+    Direction(char symbol) {
+        this.symbol = symbol;
+    }
 
     public static Direction fromSymbol(Character symbol) {
         return switch (symbol) {
@@ -38,5 +44,4 @@ public enum Direction {
             return this;
         }
     }
-
 }

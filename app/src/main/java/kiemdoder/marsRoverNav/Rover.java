@@ -73,9 +73,6 @@ public class Rover {
 
     @Override
     public String toString() {
-        return "Rover{" +
-                "coordinates=" + coordinates +
-                ", direction=" + direction +
-                '}';
+        return coordinates + " " + direction.symbol;
     }
 }
