@@ -3,9 +3,116 @@
  */
 package kiemdoder.marsRoverNav;
 
+import org.w3c.dom.ls.LSOutput;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+
 public class MarsRoverNav {
 
-    public static void main(String[] args) {
+    public static void printUsage() {
+        String usage = """
+                ./bin/app <options>
+                
+                Options:
+                --input <rover-instructions-file>
+                --output <output-file>
+                
+                When --input is not specified the rover instructions will be read from stdin
+                """;
+    }
 
+    public static void main(String[] args) {
+        // Read command line args
+        Stack<String> argsStack = new Stack<>();
+        List<String> reversedArgs = Arrays.asList(args);
+        Collections.reverse(reversedArgs);
+        for (String arg : reversedArgs) {
+            argsStack.push(arg);
+        }
+
+        Optional<String> inputFile = Optional.empty();
+        Optional<String> outputFile = Optional.empty();
+        while (!argsStack.empty()) {
+            String option = argsStack.pop();
+            if (option.equals("--input")) {
+                if (argsStack.empty()) {
+                    printUsage();
+                    return;
+                }
+                String filePath = argsStack.pop();
+                if (filePath.startsWith("--")) {
+                    printUsage();
+                    return;
+                } else {
+                    inputFile = Optional.of(filePath);
+                }
+            } else if (option.equals("--output")) {
+                if (argsStack.empty()) {
+                    printUsage();
+                    return;
+                }
+                String filePath = argsStack.pop();
+                if (filePath.startsWith("--")) {
+                    printUsage();
+                    return;
+                } else {
+                    outputFile = Optional.of(filePath);
+                }
+            } else {
+                printUsage();
+                return;
+            }
+        }
+
+        String roverInstructions = "";
+        if (inputFile.isPresent()) {
+            final Path filePath = Paths.get(inputFile.get());
+            try {
+                roverInstructions = Files.readString(filePath);
+
+            } catch (IOException e) {
+                System.out.println("Could not rover instructions file: " + inputFile.get());
+                return;
+            }
+        } else {
+            // Read the matches data from stdin
+            System.out.println("Reading input from stdin");
+            byte[] buf = new byte[1024];
+            try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                InputStream is = System.in;
+                for (int len = is.read(buf); len > 0; len = is.read(buf)) {
+                    bos.write(buf, 0, len);
+                }
+                roverInstructions = bos.toString();
+                if (roverInstructions.length() == 0) {
+                    System.out.println("No input from stdin, nothing to do");
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Optional<List<Rover>> rovers = Mars.driveRovers(roverInstructions);
+        if (rovers.isEmpty()) {
+            System.out.println("Invalid rover instructions");
+        } else {
+            String outputText = String.join("\n\r", rovers.get().stream().map(Rover::toString).toArray(String[]::new));
+            if (outputFile.isPresent()) {
+                try {
+                    Files.writeString(Paths.get(outputFile.get()), outputText);
+                } catch (IOException e) {
+                    System.out.println("Could not write results to file: " + outputFile.get());
+                }
+            } else {
+                System.out.println(outputText);
+            }
+        }
     }
 }
