@@ -16,10 +16,17 @@ public class Rover {
         this.direction = direction;
     }
 
+    /**
+     * Check if the text representation of the rover is valid.
+     */
     public static boolean isRoverTextFormat(String s) {
         return pattern.matcher(s).matches();
     }
 
+    /**
+     * Create a rover from its text representation.
+     * @return An optional rover object. The optional will be empty if the text representation of the rover was invalid.
+     */
     public static Optional<Rover> parse(String s) {
         final Matcher matcher = pattern.matcher(s);
         if (matcher.matches()) {

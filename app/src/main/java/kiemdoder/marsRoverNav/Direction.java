@@ -23,6 +23,9 @@ public enum Direction {
         };
     }
 
+    /**
+     * Produce a new direction after applying the turn operation to this direction.
+     */
     public Direction turn(TurnDirection turnDirection) {
         if (turnDirection == TurnDirection.Right) {
             return switch (this) {

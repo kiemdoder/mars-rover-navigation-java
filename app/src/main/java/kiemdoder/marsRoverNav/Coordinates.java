@@ -2,6 +2,7 @@ package kiemdoder.marsRoverNav;
 
 import java.util.Objects;
 
+//TODO: Change to new Java record type.
 public class Coordinates {
     private final int x;
     private final int y;
@@ -38,6 +39,10 @@ public class Coordinates {
         return Objects.hash(x, y);
     }
 
+    /**
+     * Create a new set of coordinates after moving from this one.
+     * @param direction The direction of movement.
+     */
     public Coordinates move(Direction direction) {
         return switch (direction) {
             case North -> new Coordinates(x, y + 1);

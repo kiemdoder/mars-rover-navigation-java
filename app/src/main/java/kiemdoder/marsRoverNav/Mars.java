@@ -8,6 +8,12 @@ public class Mars {
 
     private enum States {ReadArea, ReadRover, DriveRover}
 
+    /**
+     * Use the provided instructions text file to drive some rovers around on the surface of Mars.
+     * @param instructions The instructions to define the positions and navigation of the rovers.
+     * @return An optional list of all the rovers with their final coordinates. If the instructions
+     * file is invalid the optional will be empty.
+     */
     public static Optional<List<Rover>> driveRovers(final String instructions) {
         Rover currentRover = new Rover(new Coordinates(0, 0), Direction.North);
         List<Rover> rovers = new ArrayList<>();

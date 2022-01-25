@@ -25,6 +25,7 @@ public class MarsRoverNav {
                 
                 When --input is not specified the rover instructions will be read from stdin
                 """;
+        System.out.println(usage);
     }
 
     public static void main(String[] args) {
@@ -72,6 +73,7 @@ public class MarsRoverNav {
 
         String roverInstructions = "";
         if (inputFile.isPresent()) {
+            // Get the instructions from the file.
             final Path filePath = Paths.get(inputFile.get());
             try {
                 roverInstructions = Files.readString(filePath);
@@ -105,6 +107,7 @@ public class MarsRoverNav {
         } else {
             String outputText = String.join("\n\r", rovers.get().stream().map(Rover::toString).toArray(String[]::new));
             if (outputFile.isPresent()) {
+                // Write the output to a file
                 try {
                     Files.writeString(Paths.get(outputFile.get()), outputText);
                 } catch (IOException e) {
