@@ -16,15 +16,13 @@ import java.util.*;
 public class MarsRoverNav {
 
     public static void printUsage() {
-        String usage = """
-                ./bin/app <options>
-                
-                Options:
-                --input <rover-instructions-file>
-                --output <output-file>
-                
-                When --input is not specified the rover instructions will be read from stdin
-                """;
+        String usage = "./bin/app <options>\n" +
+                " \n" +
+                " Options:\n" +
+                " --input <rover-instructions-file>\n" +
+                " --output <output-file>\n" +
+                " \n" +
+                " When --input is not specified the rover instructions will be read from stdin\n";
         System.out.println(usage);
     }
 
