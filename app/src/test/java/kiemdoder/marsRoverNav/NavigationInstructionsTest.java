@@ -1,6 +1,5 @@
 package kiemdoder.marsRoverNav;
 
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
