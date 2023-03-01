@@ -81,7 +81,7 @@ public class MarsRoverNav {
                 return;
             }
         } else {
-            // Read the matches data from stdin
+            // Read the instructions data from stdin
             System.out.println("Reading input from stdin");
             byte[] buf = new byte[1024];
             try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
